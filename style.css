@@ -111,21 +111,6 @@ header h1 {
     color: #333;
 }
 
-/* Hide Moralis Warning Banner */
-#price-chart-widget-container .warning-banner,
-#price-chart-widget-container [style*="background: yellow"],
-#price-chart-widget-container [style*="background-color: yellow"],
-#price-chart-widget-container [style*="background:#ffff"],
-#price-chart-widget-container [style*="background-color:#ffff"],
-#price-chart-widget-container div[style*="yellow"],
-#price-chart-widget-container .moralis-warning,
-iframe[src*="moralis"] .warning-message {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    overflow: hidden !important;
-}
-
 .info-card h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
