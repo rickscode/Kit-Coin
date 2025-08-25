@@ -20,9 +20,19 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo-section">
-                <img src="logo.jpeg" alt="Kit-Coin Logo" class="logo-image">
-                <h1>$KITCOIN</h1>
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="logo.jpeg" alt="Kit-Coin Logo" class="logo-image">
+                    <h1>$KITCOIN</h1>
+                </div>
+                
+                <!-- Wallet Connection in Top Right -->
+                <div class="wallet-header">
+                    <div class="wallet-info-header" id="walletInfoHeader" style="display: none;">
+                        <span class="wallet-address-header" id="walletAddressHeader"></span>
+                    </div>
+                    <button class="btn-wallet" id="connectWalletBtnHeader" onclick="connectWallet()">Connect Wallet</button>
+                </div>
             </div>
         </header>
 
@@ -59,17 +69,7 @@
 
             <section class="cta">
                 <h3>Ready to join the Kit-Coin revolution?</h3>
-                
-                <!-- Wallet Connection Status -->
-                <div class="wallet-status" id="walletStatus">
-                    <div class="wallet-info" id="walletInfo" style="display: none;">
-                        <span class="wallet-label">Connected:</span>
-                        <span class="wallet-address" id="walletAddress"></span>
-                    </div>
-                </div>
-                
                 <div class="buttons">
-                    <button class="btn btn-secondary" id="connectWalletBtn" onclick="connectWallet()">Connect Wallet</button>
                     <a href="https://dexscreener.com/solana/31aftufgoozfmjstsusdnadomn3evjawru7dehnyfrf3" target="_blank" class="btn btn-primary">Buy KitCoin</a>
                 </div>
             </section>
@@ -108,7 +108,7 @@
             }
 
             try {
-                const connectBtn = document.getElementById('connectWalletBtn');
+                const connectBtn = document.getElementById('connectWalletBtnHeader');
                 connectBtn.textContent = 'Connecting...';
                 connectBtn.disabled = true;
 
@@ -126,7 +126,7 @@
                 console.error('Failed to connect wallet:', error);
                 alert('Failed to connect wallet. Please try again.');
                 
-                const connectBtn = document.getElementById('connectWalletBtn');
+                const connectBtn = document.getElementById('connectWalletBtnHeader');
                 connectBtn.textContent = 'Connect Wallet';
                 connectBtn.disabled = false;
             }
@@ -155,29 +155,29 @@
 
         // Update wallet UI based on connection state
         function updateWalletUI() {
-            const connectBtn = document.getElementById('connectWalletBtn');
-            const walletInfo = document.getElementById('walletInfo');
-            const walletAddress = document.getElementById('walletAddress');
+            const connectBtn = document.getElementById('connectWalletBtnHeader');
+            const walletInfoHeader = document.getElementById('walletInfoHeader');
+            const walletAddressHeader = document.getElementById('walletAddressHeader');
 
             if (walletConnected && userWallet) {
                 // Show connected state
                 connectBtn.textContent = 'Disconnect';
                 connectBtn.onclick = disconnectWallet;
-                connectBtn.className = 'btn btn-outline';
+                connectBtn.className = 'btn-wallet btn-wallet-disconnect';
                 
                 // Show wallet address (truncated)
                 const truncatedAddress = `${userWallet.slice(0, 4)}...${userWallet.slice(-4)}`;
-                walletAddress.textContent = truncatedAddress;
-                walletInfo.style.display = 'block';
+                walletAddressHeader.textContent = truncatedAddress;
+                walletInfoHeader.style.display = 'block';
             } else {
                 // Show disconnected state
                 connectBtn.textContent = 'Connect Wallet';
                 connectBtn.onclick = connectWallet;
-                connectBtn.className = 'btn btn-secondary';
+                connectBtn.className = 'btn-wallet';
                 connectBtn.disabled = false;
                 
                 // Hide wallet address
-                walletInfo.style.display = 'none';
+                walletInfoHeader.style.display = 'none';
             }
         }
 
