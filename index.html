@@ -246,12 +246,46 @@
             }
         }
 
+        // Hide Moralis warning banner
+        function hideMoralisWarning() {
+            const chartContainer = document.getElementById('price-chart-widget-container');
+            if (chartContainer) {
+                // Hide elements with yellow background or warning text
+                const warnings = chartContainer.querySelectorAll(
+                    '[style*="yellow"], [style*="#ffff"], .warning, [class*="warning"], [id*="warning"]'
+                );
+                warnings.forEach(warning => {
+                    if (warning.textContent && warning.textContent.includes('moralis.io')) {
+                        warning.style.display = 'none';
+                        warning.style.visibility = 'hidden';
+                        warning.style.height = '0px';
+                        warning.style.overflow = 'hidden';
+                    }
+                });
+
+                // Also check for any div containing "Please contact hello@moralis.io"
+                const allDivs = chartContainer.querySelectorAll('div');
+                allDivs.forEach(div => {
+                    if (div.textContent && div.textContent.includes('Please contact hello@moralis.io')) {
+                        div.style.display = 'none';
+                    }
+                });
+            }
+        }
+
         // Initialize wallet connection check when page loads
         document.addEventListener('DOMContentLoaded', function() {
             updateWalletUI();
             
             // Wait a bit for Phantom to inject, then check connection
             setTimeout(checkExistingConnection, 500);
+
+            // Hide Moralis warning after chart loads
+            setTimeout(hideMoralisWarning, 2000);
+            setTimeout(hideMoralisWarning, 5000); // Try again after 5 seconds
+            
+            // Set up periodic check to hide warning if it reappears
+            setInterval(hideMoralisWarning, 10000); // Check every 10 seconds
         });
 
         // Listen for wallet events
