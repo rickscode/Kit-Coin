@@ -208,6 +208,47 @@ header h1 {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
+.btn-outline {
+    background: transparent;
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+}
+
+.btn-outline:hover {
+    background: #e74c3c;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+/* Wallet Connection Styles */
+.wallet-status {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.wallet-info {
+    background: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    display: inline-block;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 2px solid #4ade80;
+}
+
+.wallet-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-right: 0.5rem;
+}
+
+.wallet-address {
+    font-family: 'Monaco', monospace;
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem;
+}
+
 footer {
     text-align: center;
     color: #666;
@@ -344,6 +385,15 @@ footer {
         width: 200px;
     }
     
+    .wallet-info {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .wallet-address {
+        font-size: 0.8rem;
+    }
+    
     .modal-content {
         margin: 10% auto;
         width: 95%;
@@ -388,6 +438,15 @@ footer {
     .token-address {
         min-width: 200px;
         font-size: 0.7rem;
+    }
+    
+    .wallet-info {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+    }
+    
+    .wallet-address {
+        font-size: 0.75rem;
     }
     
     .modal-content {

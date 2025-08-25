@@ -59,7 +59,17 @@
 
             <section class="cta">
                 <h3>Ready to join the Kit-Coin revolution?</h3>
+                
+                <!-- Wallet Connection Status -->
+                <div class="wallet-status" id="walletStatus">
+                    <div class="wallet-info" id="walletInfo" style="display: none;">
+                        <span class="wallet-label">Connected:</span>
+                        <span class="wallet-address" id="walletAddress"></span>
+                    </div>
+                </div>
+                
                 <div class="buttons">
+                    <button class="btn btn-secondary" id="connectWalletBtn" onclick="connectWallet()">Connect Wallet</button>
                     <a href="https://dexscreener.com/solana/31aftufgoozfmjstsusdnadomn3evjawru7dehnyfrf3" target="_blank" class="btn btn-primary">Buy KitCoin</a>
                 </div>
             </section>
@@ -71,12 +81,144 @@
     </div>
 
     <script>
+        // Wallet connection state
+        let walletConnected = false;
+        let userWallet = null;
+
         function copyToClipboard() {
             const tokenAddress = '2TCC7GSr6aYUVni5wgBtnB6xbprijYszHMwoVVBgpump';
             navigator.clipboard.writeText(tokenAddress).then(() => {
                 const btn = document.querySelector('.copy-btn');
                 btn.textContent = 'Copied!';
                 setTimeout(() => btn.textContent = 'Copy', 2000);
+            });
+        }
+
+        // Check if Phantom wallet is installed
+        function isPhantomInstalled() {
+            return window.solana && window.solana.isPhantom;
+        }
+
+        // Connect to Phantom wallet
+        async function connectWallet() {
+            if (!isPhantomInstalled()) {
+                alert('Please install Phantom wallet from phantom.app to connect!');
+                window.open('https://phantom.app/', '_blank');
+                return;
+            }
+
+            try {
+                const connectBtn = document.getElementById('connectWalletBtn');
+                connectBtn.textContent = 'Connecting...';
+                connectBtn.disabled = true;
+
+                const response = await window.solana.connect();
+                userWallet = response.publicKey.toString();
+                walletConnected = true;
+
+                // Save connection state
+                localStorage.setItem('walletConnected', 'true');
+                localStorage.setItem('userWallet', userWallet);
+
+                updateWalletUI();
+                console.log('Wallet connected:', userWallet);
+            } catch (error) {
+                console.error('Failed to connect wallet:', error);
+                alert('Failed to connect wallet. Please try again.');
+                
+                const connectBtn = document.getElementById('connectWalletBtn');
+                connectBtn.textContent = 'Connect Wallet';
+                connectBtn.disabled = false;
+            }
+        }
+
+        // Disconnect wallet
+        function disconnectWallet() {
+            try {
+                if (window.solana && walletConnected) {
+                    window.solana.disconnect();
+                }
+                
+                walletConnected = false;
+                userWallet = null;
+                
+                // Clear saved state
+                localStorage.removeItem('walletConnected');
+                localStorage.removeItem('userWallet');
+                
+                updateWalletUI();
+                console.log('Wallet disconnected');
+            } catch (error) {
+                console.error('Error disconnecting wallet:', error);
+            }
+        }
+
+        // Update wallet UI based on connection state
+        function updateWalletUI() {
+            const connectBtn = document.getElementById('connectWalletBtn');
+            const walletInfo = document.getElementById('walletInfo');
+            const walletAddress = document.getElementById('walletAddress');
+
+            if (walletConnected && userWallet) {
+                // Show connected state
+                connectBtn.textContent = 'Disconnect';
+                connectBtn.onclick = disconnectWallet;
+                connectBtn.className = 'btn btn-outline';
+                
+                // Show wallet address (truncated)
+                const truncatedAddress = `${userWallet.slice(0, 4)}...${userWallet.slice(-4)}`;
+                walletAddress.textContent = truncatedAddress;
+                walletInfo.style.display = 'block';
+            } else {
+                // Show disconnected state
+                connectBtn.textContent = 'Connect Wallet';
+                connectBtn.onclick = connectWallet;
+                connectBtn.className = 'btn btn-secondary';
+                connectBtn.disabled = false;
+                
+                // Hide wallet address
+                walletInfo.style.display = 'none';
+            }
+        }
+
+        // Check for existing connection on page load
+        async function checkExistingConnection() {
+            const savedConnection = localStorage.getItem('walletConnected');
+            const savedWallet = localStorage.getItem('userWallet');
+
+            if (savedConnection === 'true' && savedWallet && isPhantomInstalled()) {
+                try {
+                    // Try to reconnect silently
+                    const response = await window.solana.connect({ onlyIfTrusted: true });
+                    userWallet = response.publicKey.toString();
+                    walletConnected = true;
+                    updateWalletUI();
+                    console.log('Auto-reconnected to wallet:', userWallet);
+                } catch (error) {
+                    console.log('Auto-reconnect failed, clearing saved state');
+                    localStorage.removeItem('walletConnected');
+                    localStorage.removeItem('userWallet');
+                }
+            }
+        }
+
+        // Initialize wallet connection check when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            updateWalletUI();
+            
+            // Wait a bit for Phantom to inject, then check connection
+            setTimeout(checkExistingConnection, 500);
+        });
+
+        // Listen for wallet events
+        if (window.solana) {
+            window.solana.on('disconnect', () => {
+                walletConnected = false;
+                userWallet = null;
+                localStorage.removeItem('walletConnected');
+                localStorage.removeItem('userWallet');
+                updateWalletUI();
+                console.log('Wallet disconnected by user');
             });
         }
     </script>
