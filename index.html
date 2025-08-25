@@ -23,7 +23,7 @@
             <div class="header-content">
                 <div class="logo-section">
                     <img src="logo.jpeg" alt="Kit-Coin Logo" class="logo-image">
-                    <h1>$KITCOIN</h1>
+                    <!-- <h1>$KITCOIN</h1> -->
                 </div>
                 
                 <!-- Wallet Connection in Top Right -->
@@ -31,7 +31,7 @@
                     <div class="wallet-info-header" id="walletInfoHeader" style="display: none;">
                         <span class="wallet-address-header" id="walletAddressHeader"></span>
                     </div>
-                    <button class="btn-wallet" id="connectWalletBtnHeader" onclick="connectWallet()">Buy KitCoin</button>
+                    <button class="btn-wallet" id="connectWalletBtnHeader" onclick="connectWallet()">BUY KITCOIN</button>
                 </div>
             </div>
         </header>
@@ -39,7 +39,7 @@
         <main>
             <section class="hero">
                 <h2 class="slogan">Like Bitcoin. But For Cats</h2>
-                <p class="description">The world's first KittyCurrency - bringing feline finance to the blockchain revolution.</p>
+                <!-- <p class="description">The world's first KittyCurrency - bringing feline finance to the blockchain revolution.</p> -->
             </section>
 
             <section class="token-info">
@@ -171,7 +171,7 @@
                 alert('Failed to connect wallet. Please try again.');
                 
                 const connectBtn = document.getElementById('connectWalletBtnHeader');
-                connectBtn.textContent = 'Buy KitCoin';
+                connectBtn.textContent = 'BUY KITCOIN';
                 connectBtn.disabled = false;
             }
         }
@@ -215,7 +215,7 @@
                 walletInfoHeader.style.display = 'block';
             } else {
                 // Show disconnected state
-                connectBtn.textContent = 'Buy KitCoin';
+                connectBtn.textContent = 'BUY KITCOIN';
                 connectBtn.onclick = connectWallet;
                 connectBtn.className = 'btn-wallet';
                 connectBtn.disabled = false;
