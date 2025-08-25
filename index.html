@@ -171,7 +171,7 @@
                 alert('Failed to connect wallet. Please try again.');
                 
                 const connectBtn = document.getElementById('connectWalletBtnHeader');
-                connectBtn.textContent = 'Connect Wallet';
+                connectBtn.textContent = 'Buy KitCoin';
                 connectBtn.disabled = false;
             }
         }
@@ -215,7 +215,7 @@
                 walletInfoHeader.style.display = 'block';
             } else {
                 // Show disconnected state
-                connectBtn.textContent = 'Connect Wallet';
+                connectBtn.textContent = 'Buy KitCoin';
                 connectBtn.onclick = connectWallet;
                 connectBtn.className = 'btn-wallet';
                 connectBtn.disabled = false;
