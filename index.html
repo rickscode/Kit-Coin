@@ -31,7 +31,7 @@
                     <div class="wallet-info-header" id="walletInfoHeader" style="display: none;">
                         <span class="wallet-address-header" id="walletAddressHeader"></span>
                     </div>
-                    <button class="btn-wallet" id="connectWalletBtnHeader" onclick="connectWallet()">Connect Wallet</button>
+                    <button class="btn-wallet" id="connectWalletBtnHeader" onclick="connectWallet()">Buy KitCoin</button>
                 </div>
             </div>
         </header>
@@ -171,7 +171,7 @@
                 alert('Failed to connect wallet. Please try again.');
                 
                 const connectBtn = document.getElementById('connectWalletBtnHeader');
-                connectBtn.textContent = 'Buy KitCoin';
+                connectBtn.textContent = 'Connect Wallet';
                 connectBtn.disabled = false;
             }
         }
