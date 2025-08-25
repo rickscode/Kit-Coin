@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kit-Coin | Like Bitcoin. But For Cats</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
+    <link rel="manifest" href="site.webmanifest">
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://terminal.jup.ag/main-v3.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-section">
+                <img src="logo.jpeg" alt="Kit-Coin Logo" class="logo-image">
+                <h1>$KITCOIN</h1>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero">
+                <h2 class="slogan">Like Bitcoin. But For Cats</h2>
+                <p class="description">The world's first KittyCurrency - bringing feline finance to the blockchain revolution.</p>
+            </section>
+
+            <section class="token-info">
+                <div class="info-card">
+                    <h3>Token Address</h3>
+                    <div class="address-container">
+                        <code class="token-address">2TCC7GSr6aYUVni5wgBtnB6xbprijYszHMwoVVBgpump</code>
+                        <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
+                    </div>
+                </div>
+
+                <div class="features">
+                    <div class="feature">
+                        <h4>For Cats</h4>
+                        <p>Finally, a cryptocurrency that understands feline economics</p>
+                    </div>
+                    <div class="feature">
+                        <h4>To The Moon</h4>
+                        <p>Nine lives means nine times the potential</p>
+                    </div>
+                    <div class="feature">
+                        <h4>Diamond Paws</h4>
+                        <p>HODL with the strength of a thousand purrs</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta">
+                <h3>Ready to join the Kit-Coin revolution?</h3>
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="openBuyModal()">Buy $KITCOIN</button>
+                    <a href="https://dexscreener.com/solana/31aftufgoozfmjstsusdnadomn3evjawru7dehnyfrf3" target="_blank" class="btn btn-secondary">View Chart</a>
+                </div>
+            </section>
+
+            <!-- Buy Modal -->
+            <div id="buyModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Buy $KITCOIN</h3>
+                        <span class="close" onclick="closeBuyModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div id="jupiter-terminal" class="jupiter-container"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Kit-Coin. All rights reserved. | Built with 🐾 for the crypto cat community</p>
+        </footer>
+    </div>
+
+    <script>
+        let jupiterTerminalInstance;
+
+        function copyToClipboard() {
+            const tokenAddress = '2TCC7GSr6aYUVni5wgBtnB6xbprijYszHMwoVVBgpump';
+            navigator.clipboard.writeText(tokenAddress).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy', 2000);
+            });
+        }
+
+        function initJupiterTerminal() {
+            if (typeof window.Jupiter === 'undefined') {
+                console.log('Jupiter Terminal not loaded yet, retrying...');
+                setTimeout(initJupiterTerminal, 100);
+                return;
+            }
+
+            const jupiterTerminal = window.Jupiter.init({
+                displayMode: 'integrated',
+                integratedTargetId: 'jupiter-terminal',
+                endpoint: 'https://api.mainnet-beta.solana.com',
+                defaultExplorer: 'SolanaFM',
+                strictTokenList: false,
+                defaultToTokenAddress: '2TCC7GSr6aYUVni5wgBtnB6xbprijYszHMwoVVBgpump', // Kit-Coin preset
+                formProps: {
+                    fixedOutputMint: true, // Lock Kit-Coin as destination
+                },
+                containerStyles: {
+                    maxHeight: '500px',
+                    borderRadius: '20px'
+                },
+                onSuccess: ({ txid, inputAmount, outputAmount }) => {
+                    console.log('Kit-Coin purchase successful!', { txid, inputAmount, outputAmount });
+                    // Show success message
+                    alert('🎉 Kit-Coin purchase successful! Transaction: ' + txid);
+                },
+                onError: ({ error }) => {
+                    console.error('Swap error:', error);
+                    alert('❌ Transaction failed. Please try again.');
+                }
+            });
+
+            jupiterTerminalInstance = jupiterTerminal;
+        }
+
+        function openBuyModal() {
+            document.getElementById('buyModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Only initialize Jupiter Terminal when user clicks buy button
+            if (!jupiterTerminalInstance) {
+                console.log('Initializing Jupiter Terminal for Kit-Coin purchase...');
+                initJupiterTerminal();
+            }
+        }
+
+        function closeBuyModal() {
+            document.getElementById('buyModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('buyModal');
+            if (event.target == modal) {
+                closeBuyModal();
+            }
+        }
+
+        // Close modal with escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeBuyModal();
+            }
+        });
+
+        // Jupiter Terminal will only load when user clicks "Buy $KITCOIN" button
+    </script>
+</body>
+</html>
