@@ -96,6 +96,21 @@ header h1 {
     text-align: center;
 }
 
+.chart-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.chart-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
 .info-card h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
